@@ -1,0 +1,28 @@
+Lab Manual of ‘Data Structures and Algorithms’
+
+EXPERIMENT 4
+
+VOTER MANAGEMENT SYSTEM (Open Ended Lab)
+
+Objective:
+To be able to construct solution for the given open-ended problem.
+
+Problem Statement:
+You want to produce a program to store data about eligible voters in Pakistan.
+The system should be able to execute:
+1. Add a new voter to the system efficiently.
+2. Remove a voter if he/she passes away or becomes ineligible.
+3. Print the list of all currently eligible voters.
+4. Search for a voter by CNIC.
+5. Print the voter with maximum count (as the winner).
+
+You should store enough data and investigate the performance of your system versus if used
+any other data structure as compared to the one you chose for writing your program.
+
+Deliverables:
+Write a report that provides a brief description of your designed system and includes the following
+sections:
+1. Design
+2. Implementation in C++
+3. Output
+4. Performance Analysis
