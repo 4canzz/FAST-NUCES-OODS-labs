@@ -1,0 +1,2 @@
+# FAST-NUCES-OODS-labs
+A repository with solutions to all* problem sets, I wrote in my CS2021 Object Oriented Data Structures (Theeory/Lab) course which I took in the third semester of my BS(EE) at FAST NUCES LHR
