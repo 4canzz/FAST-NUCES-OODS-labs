@@ -11,11 +11,13 @@ public:
     int voteCount;
     Voter(string n, int a, string c, int vc) 
      : name(n), cnic(c), voteCount(vc) { 
-        if(a <= 18) { 
+        if(a >= 18) { 
             age = a;
         }
-        else age = -1;
-        cout << "candidate "<< name << " is underage. " << endl; 
+        else {
+            age = -1;
+            cout << "candidate "<< name << " is underage. " << endl; 
+        }
     }
      friend ostream& operator<<(ostream& os, const Voter& voter);
 };
