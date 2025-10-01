@@ -15,7 +15,7 @@ public:
             age = a;
         }
         else age = -1;
-        out << "candidate "<< name << " is underage. " << endl; 
+        cout << "candidate "<< name << " is underage. " << endl; 
     }
      friend ostream& operator<<(ostream& os, const Voter& voter);
 };
