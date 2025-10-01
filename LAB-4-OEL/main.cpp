@@ -13,9 +13,9 @@ public:
      : name(n), cnic(c), voteCount(vc) { 
         if(a <= 18) { 
             age = a;
-            cout << "candidate "<< name << " is underage. " << endl;
         }
-        else age = -1; 
+        else age = -1;
+        out << "candidate "<< name << " is underage. " << endl; 
     }
      friend ostream& operator<<(ostream& os, const Voter& voter);
 };
