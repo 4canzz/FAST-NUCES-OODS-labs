@@ -149,7 +149,6 @@ int main() {
 	cout << "*************************************" << endl;
 	cout << "Height of the binary tree is " << endl;
 	BT->calculateHeightItr();
-	system("pause");
 	return 0;
 
 }
