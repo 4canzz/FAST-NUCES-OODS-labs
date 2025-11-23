@@ -152,3 +152,32 @@ int main() {
 	return 0;
 
 }
+
+/*Exercise 1:
+Using the Binary tree node class and buildtree methods that you implemented in Lab7, implement Preorder, Inorder, Postorder and level order traversals (part1 to 4)
+of Binary tree iteratively as given in the class definition on next page (name it as BinaryTree.h). Please include and use the stack and queue that comes with 
+C++ for implementing the traversals iteratively:
+The following sample code demonstrates how we can use the built-in stack and queue that comes with C++ for storing BNode objects
+
+void sample () {
+	//using stack for storing objects of BNode
+	stack<BNode<int>*>* s = new stack<BNode<int>*>();
+	BNode<int>* temp = root;
+	s->push(temp);
+	temp=s->top();
+	s->pop;
+	cout << temp->getData() << " ";
+
+	//using queue for storing objects of BNode
+	queue<BNode<int>*>* q = new queue<BNode<int>*>();
+	BNode<int>* temp = root;
+	q->push(temp);
+	temp=s->front();
+	q->pop();
+	cout << temp->getData() << " ";
+}
+*/
+
+/*Exercise 2:
+Implement part5 of the header file given in exercise 1 that should calculate and return the height of
+the Binary tree iteratively.*/
