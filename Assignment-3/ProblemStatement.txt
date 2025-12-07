@@ -1,0 +1,116 @@
+Question No. 1. (CLO No. 4) Marks: 100
+You will develop a delivery logistics system for a courier company (like TCS, DHL, or Amazon).
+The system uses:
+    • A Graph to model delivery routes between cities.
+    • A Hash Table to store shipment records.
+Hash Table for Shipment Tracking
+Each shipment has:
+    • shipmentID (key)
+    • senderName
+    • receiverName
+    • destinationCity
+    • sourceCity
+Hash Table must support: (Linear Probing)
+    1. insertShipment(int id, string sender, string receiver, string city)
+    2. searchShipment(int id)
+    3. removeShipment(int id)
+    4. A hashing method (id % tableSize)
+
+class Shipment {
+public:
+    int id;
+    string sender;
+    string receiver;
+    string FomCity;
+    string ToCity
+};
+
+class HashTable {
+private:
+    int SIZE;
+    Shipment* table;
+    bool occupied[SIZE];
+public:
+    HashTable(int hashsize);
+    int hashFunction(int key);
+    void insertShipment(int id, string s, string r, string fromcity, string tocity);
+    Shipment* searchShipment(int id);
+    void removeShipment(int id);
+}
+
+Part 2 — Graph for Route Optimization
+Model cities as nodes in a graph:
+    • Each node is a city
+    • Each edge is a direct delivery route
+    • Edge weight = distance in km
+Required Functions
+    1. addRoute(int u, int v, int distance)
+    2. findShortestRoute(int src, int dest) using Dijkstra
+    3. removeRoute(int u, int v)
+    4. printRouteMap() (adjacency matrix)
+
+Part 3 — Delivery Application Class
+Integrate Graph + Hashing.
+The system should allow:
+    1. Add a fixed set of routes
+    2. Find the best route from source → shipment destination for a given shipment ID and print the best route
+    3. Print map and insert shipments
+
+class Graph {
+private:
+    static const int MAX = 5; // FIXED NUMBER OF CITIES
+    string cities[MAX] = {"Lahore", "Islamabad", "Karachi", "Multan",”Peshawar”};
+    int adj[MAX][MAX];
+public:
+    Graph();
+    void addRoute(int u, int v, int distance);
+    void removeRoute(int u, int v);
+    void findShortestRoute(int src, int dest);
+    int getCityIndex(string c) {
+        for (int i = 0; i < MAX; i++) {
+            if (cities[i] == c) return i;
+            return -1;
+        }
+    }
+    void printRouteMap()
+};
+
+Test your delivery application using the given client program.
+class DeliveryApp {
+private:
+    Graph graph;
+    HashTable shipments;
+public:
+    DeliveryApp(int hashSize) : shipments(hashSize) {
+        // setup fixed routes
+        graph.addRoute(0, 1, 380);
+        graph.addRoute(0, 3, 350);
+        graph.addRoute(1, 2, 1400);
+        graph.addRoute(2, 3, 900);
+    }
+    void addRoute(int FromCity, int ToCity, int distance);{
+        graph.addRoute(FromCity, ToCity, distance);
+    }
+    bool insertShipment(int id, string sender, string receiver, string src, string dest) {
+        return shipments.insertShipment(id, sender, receiver, src, dest);
+    }
+    void findRouteForShipment(int shipmentID);
+    void printMap() {
+        graph.printMap();
+    }
+};
+
+int main() {
+    int hashSize=10;
+    DeliveryApp app(hashSize);
+    app.insertShipment(1001, "Ali", "Hassan", "Lahore", "Karachi");
+    app.insertShipment(2045, "Fatima", "Zara", "Lahore", "Multan");
+    app.insertShipment(3090, "Ahmed", "Bilal", "Islamabad", "Karachi");
+    cout << "\n--- Route Map ---\n";
+    app.printMap();
+    cout << "\n--- Testing Features ---\n";
+    app.findRouteForShipment(2045);
+    app.findRouteForShipment(1001);
+    app.findRouteForShipment(3090);
+return 0;
+}

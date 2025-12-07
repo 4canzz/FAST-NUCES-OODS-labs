@@ -1,0 +1,23 @@
+Question No. 1 (CLO No. 3) Marks: 100
+
+You are required to develop a directory system for employees. Initially, the information about employees is
+loaded from a file (a sample file is attached). Each line in the file contains the following data in order:
+EmployeeID, FirstName, LastName, Department, Salary
+The EmployeeID serves as the key for each employee.
+
+Requirements:
+    1. Load all employee data from the file into an appropriate data structure such that a search operation
+    based on EmployeeID takes no worse than O(log n) time.
+    2. Allow the user to:
+        o Add a new employee to the directory.
+        o Delete an employee using their EmployeeID.
+        o Search for an employee by EmployeeID and display their full record.
+        o Display all employees in ascending or descending order based on EmployeeID.
+        o Add at least 5 more employees to the file (including your own fictional entry).
+
+Submission Requirements:
+    • A working code file that implements all the required operations.
+    • A short text document explaining:
+        o Which data structure you used and why.
+        o How the search time complexity is maintained as O(log n).
+        o How insertion, deletion, and sorting are handled.

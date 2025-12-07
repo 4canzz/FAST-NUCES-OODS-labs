@@ -1,0 +1,8 @@
+1234 Ali Ahmed HR 36000
+1233 Ahmed Khan Sales 15000
+1235 Zakiya Irfan Marketing 40000
+1122 Furqan Hassan CEO 100000
+1100 Kashif Razaak Consultant 50000
+1255 Shah Khan Sales 15000
+1433 Usama Nawaz Sales 15000
+1778 Shehryaar Awan Marketing 40000
