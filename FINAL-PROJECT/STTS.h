@@ -10,7 +10,7 @@
 
 using namespace std;
 
-const string cityname[6] = {"Lahore", "Islamabad", "Karachi", "Peshawar", "Chinot", "Multan"};               
+const string cityname[6] = { "Lahore", "Islamabad", "Karachi", "Peshawar", "Chinot", "Multan" };
 
 class Passenger {
 private:
@@ -22,13 +22,17 @@ private:
 public:
     Passenger() : passengerID(0), name(""), cnic(""), phone("") {}
     Passenger(int id, string n, string c, string p) : passengerID(id), name(n), cnic(c), phone(p) {}
-    
+
     int getID() const { return passengerID; }
     string getName() const { return name; }
 
     operator int() const { return passengerID; }
 
     bool operator==(const Passenger& other) const { return this->passengerID == other.passengerID; }
+
+    string fileFormat() const {
+        return to_string(passengerID) + " " + name + " " + cnic + " " + phone;
+    }
 
     friend ostream& operator<<(ostream& os, const Passenger& p) {
         os << "[ID: " << p.passengerID << " | Name: " << p.name << "]";
@@ -40,14 +44,14 @@ class Route {
 private:
     int routeID;
     int sourceCity;
-    int destinationCity;  
-    int distance;         
+    int destinationCity;
+    int distance;
     int baseFare;
     int seatCapacity;
 public:
     Route() : routeID(0), sourceCity(0), destinationCity(0), distance(0), baseFare(0), seatCapacity(0) {}
-    Route(int id, int src, int dest, int dist, int fare, int cap) 
-     : routeID(id), sourceCity(src), destinationCity(dest), distance(dist), baseFare(fare), seatCapacity(cap) {}
+    Route(int id, int src, int dest, int dist, int fare, int cap)
+        : routeID(id), sourceCity(src), destinationCity(dest), distance(dist), baseFare(fare), seatCapacity(cap) {}
 
     int getID() const { return routeID; }
     int getSource() const { return sourceCity; }
@@ -66,11 +70,17 @@ public:
 
     operator int() const { return routeID; }
 
+    string fileFormat() const {
+        return to_string(routeID) + " " + to_string(sourceCity) + " " +
+            to_string(destinationCity) + " " + to_string(distance) + " " +
+            to_string(baseFare) + " " + to_string(seatCapacity);
+    }
+
     bool operator==(const Route& other) const { return this->routeID == other.routeID; }
 
     friend ostream& operator<<(ostream& os, const Route& r) {
-        os << "[Route: " << r.routeID << " | " << cityname[r.sourceCity] << "->" << cityname[r.destinationCity] 
-           << " | Seats: " << r.seatCapacity << "]";
+        os << "[Route: " << r.routeID << " | " << cityname[r.sourceCity] << "->" << cityname[r.destinationCity]
+            << " | Seats: " << r.seatCapacity << "]";
         return os;
     }
 };
@@ -85,8 +95,8 @@ private:
     int fare;
 public:
     Booking() : bookingID(0), passengerID(0), routeID(0), seatNumber(0), date(""), fare(0) {}
-    Booking(int id, int pID, int rID, int seat, string d, int f) 
-      : bookingID(id), passengerID(pID), routeID(rID), seatNumber(seat), date(d), fare(f) {}
+    Booking(int id, int pID, int rID, int seat, string d, int f)
+        : bookingID(id), passengerID(pID), routeID(rID), seatNumber(seat), date(d), fare(f) {}
 
     int getID() const { return bookingID; }
     int getRouteID() const { return routeID; }
@@ -102,8 +112,8 @@ public:
 };
 
 struct Action {
-    string type;  
-    Booking data; 
+    string type;
+    Booking data;
 };
 
 class STTSystem {
@@ -111,13 +121,13 @@ private:
     Hashtable<Passenger> passengers;
     Hashtable<Route> routes;
     Hashtable<Booking> activeBookings;
-    Graph cityMap;    
+    Graph cityMap;
     Stack<Action> undoStack;
-    Queue<int> waitList;         
+    Queue<int> waitList;
     int bookingCounter;
     long totalRevenue;
 public:
-    STTSystem(int pSize, int rSize, int cities) 
+    STTSystem(int pSize, int rSize, int cities)
         : passengers(pSize), routes(rSize), activeBookings(500), cityMap(cities), bookingCounter(1), totalRevenue(0) {}
 
     void loadData(string pFile, string rFile) {
@@ -128,7 +138,7 @@ public:
         else {
             int id;
             string name, cnic, phone;
-            
+
             while (inFile >> id >> name >> cnic >> phone) {
                 Passenger p(id, name, cnic, phone);
                 passengers.store(p);
@@ -140,7 +150,7 @@ public:
         if (!inFile) cout << "Error: Could not open " << rFile << endl;
         else {
             int id, src, dest, dist, fare, cap;
-            
+
             while (inFile >> id >> src >> dest >> dist >> fare >> cap) {
                 Route r(id, src, dest, dist, fare, cap);
                 routes.store(r);
@@ -148,22 +158,25 @@ public:
             }
             inFile.close();
         }
-        cout << "Data loading complete." << endl;
     }
 
     void bookTicket(int pID, int rID, string date) {
-        Passenger pQuery(pID, "", "", ""); 
+        Passenger pQuery(pID, "", "", "");
         Route rQuery(rID, 0, 0, 0, 0, 0);
 
-        if (!passengers.search(pQuery)) cout << "Error: Passenger ID " << pID << " not found!" << endl; return;
+        if (!passengers.search(pQuery)) {
+            cout << "Error: Passenger ID " << pID << " not found!" << endl; return;
+        }
 
-        SNode<Route>* routeNode = routes.search(rQuery); 
-        if (routeNode == NULL) cout << "Error: Route ID " << rID << " not found!" << endl; return;
+        SNode<Route>* routeNode = routes.search(rQuery);
+        if (routeNode == NULL) {
+            cout << "Error: Route ID " << rID << " not found!" << endl; return;
+        }
 
         Route r = routeNode->getData();
 
         if (r.getSeatCapacity() <= 0) {
-            cout <<  endl << "! Route " << rID << " is FULL." << endl;
+            cout << endl << "! Route " << rID << " is FULL." << endl;
             cout << "! Adding Passenger " << pID << " to the Waitlist..." << endl;
             waitList.put(pID);
             return;
@@ -172,10 +185,10 @@ public:
         r.decreaseSeats();
         routeNode->setData(r);
 
-        int currentFare = r.getFare(); 
+        int currentFare = r.getFare();
         Booking newBooking(bookingCounter++, pID, rID, 1, date, currentFare);
 
-        Action act; 
+        Action act;
         act.type = "BOOK";
         act.data = newBooking;
         undoStack.push(act);
@@ -184,9 +197,8 @@ public:
         totalRevenue += currentFare;
 
         cout << "Success! Ticket Booked." << endl;
-         
-        cout << endl <<"-----------------------------------------" << endl;
-        cout << "          SMART TRAVEL TICKET            " << endl;
+        cout << endl;
+        cout << " Ticket Details            " << endl;
         cout << "-----------------------------------------" << endl;
         cout << " Booking ID:   " << newBooking.getID() << endl;
         cout << " Passenger ID: " << pID << endl;
@@ -204,7 +216,10 @@ public:
     }
 
     void undoLastAction() {
-        if (undoStack.isEmpty()) cout << "Nothing to undo." << endl; return;
+        if (undoStack.isEmpty()) {
+            cout << "Nothing to undo." << endl;
+            return;
+        }
 
         Action last = undoStack.peek();
         undoStack.pop();
@@ -215,13 +230,13 @@ public:
             int rID = last.data.getRouteID();
             Route queryRoute(rID, 0, 0, 0, 0, 0);
             SNode<Route>* routeNode = routes.search(queryRoute);
-            
+
             if (routeNode != NULL) {
                 Route r = routeNode->getData();
-                r.increaseSeats(); 
+                r.increaseSeats();
                 routeNode->setData(r);
-                
-                totalRevenue -= r.getFare(); 
+
+                totalRevenue -= r.getFare();
 
                 cout << "Undo Successful: Seat freed for Route " << rID << "." << endl;
                 cout << "Revenue Refunded: PKR " << r.getFare() << endl;
@@ -236,31 +251,21 @@ public:
         }
     }
 
-    void printTicket(int bookingID) {
-        cout << endl << "*********************************" << endl;
-        cout << "      TRAVEL TICKET RECEIPT      " << endl;
-        cout << "*********************************" << endl;
-        cout << "Booking ID: " << bookingID << endl;
-        cout << "Status:     CONFIRMED" << endl;
-        cout << "*********************************" << endl << endl;
-    }
-
     void generateAdminReport() {
-        cout << endl << "--- DAILY BOOKING & REVENUE REPORT ---" << endl;
-        cout << "Total Revenue Generated: PKR " << totalRevenue << endl;  
-        cout << "--------------------------------------" << endl;
+        cout << endl;
+        cout << "Daily Booking & Revenue Report: " << endl;
+        cout << endl;
+        cout << "Total Revenue Generated: PKR " << totalRevenue << endl;
         cout << "Active Bookings Log:" << endl;
-        activeBookings.printdata(); 
-        
-        cout << "--------------------------------------" << endl;
+        activeBookings.printdata();
         cout << "Waitlist Status: ";
         if (waitList.isEmpty()) cout << "Empty";
         else {
             cout << "(Next IDs): ";
             waitList.print();
         }
-        
-        cout << endl << "======================================" << endl << endl;
+
+        cout << endl;
     }
 
     void showRoute(int src, int dest) {
@@ -271,10 +276,29 @@ public:
 
         int* dist = new int[cityMap.getV()];
         cityMap.dijkstra(src, dist);
-        
+
         if (dist[dest] == INT_MAX) cout << "No route exists between City " << src << " and City " << dest << endl;
         else cout << "Shortest distance: " << dist[dest] << " km" << endl;
-            
+
         delete[] dist;
+    }
+
+    void saveChanges(string pFile, string rFile) {
+        passengers.saveToFile(pFile);
+        routes.saveToFile(rFile);
+    }
+
+    int findRouteID(int src, int dest) {
+        for (int i = 0; i < routes.getSize(); i++) {
+            SNode<Route>* temp = routes.getBucketHead(i);
+            while (temp != NULL) {
+                Route r = temp->getData();
+                if (r.getSource() == src && r.getDestination() == dest) {
+                    return r.getID();
+                }
+                temp = temp->GetNext();
+            }
+        }
+        return -1;
     }
 };
